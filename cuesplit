@@ -4,6 +4,8 @@
 # optional dependencies:    flac, mac, wavpack, ttaenc
 # v1.3 sen
 
+export IFS=$'\n'
+
 
 SDIR=`pwd`
 
