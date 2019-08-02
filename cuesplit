@@ -38,18 +38,16 @@ TYPE=`ls -t1`
 
 case $TYPE in
     *.ape*)
-        mkdir -p split || continue
-        shnsplit -d split -f *.cue -o "${OPTION_SHNSPLIT}" *.ape -t "${FORMAT_SHNSPLIT}" || continue
-        rm -f split/00*pregap* || continue
-        cuetag.sh *.cue split/*.flac || continue
+        shnsplit -f *.cue -o "${OPTION_SHNSPLIT}" *.ape -t "${FORMAT_SHNSPLIT}" || continue
+        rm -f 00*pregap* || continue
+        cuetag.sh *.cue *.flac || continue
         exit
         ;;
 
     *.flac*)
-        mkdir -p split || continue
-        shnsplit -d split -f *.cue -o "${OPTION_SHNSPLIT}" *.flac -t "${FORMAT_SHNSPLIT}" || cnotinue
-        rm -f split/00*pregap* || continue
-        cuetag.sh *.cue split/*.flac || continue
+        shnsplit -f *.cue -o "${OPTION_SHNSPLIT}" *.flac -t "${FORMAT_SHNSPLIT}" || cnotinue
+        rm -f 00*pregap* || continue
+        cuetag.sh *.cue *.flac || continue
         exit
         ;;
 
@@ -66,26 +64,23 @@ case $TYPE in
         ;;
 
     *.tta*)
-        mkdir -p split || continue
-        shnsplit -d split -f *.cue -o "${OPTION_SHNSPLIT}" *.tta -t "${FORMAT_SHNSPLIT}" || continue
-        rm -f split/00*pregap* || continue
-        cuetag.sh *.cue split/*.flac || continue
+        shnsplit -f *.cue -o "${OPTION_SHNSPLIT}" *.tta -t "${FORMAT_SHNSPLIT}" || continue
+        rm -f 00*pregap* || continue
+        cuetag.sh *.cue *.flac || continue
         exit
         ;;
 
     *.wv*)
-        mkdir -p split || continue
-        shnsplit -d split -f *.cue -o "${OPTION_SHNSPLIT}" *.wv -t "${FORMAT_SHNSPLIT}" || continue
-        rm -f split/00*pregap* || continue
-        cuetag.sh *.cue split/*.flac || continue
+        shnsplit -f *.cue -o "${OPTION_SHNSPLIT}" *.wv -t "${FORMAT_SHNSPLIT}" || continue
+        rm -f 00*pregap* || continue
+        cuetag.sh *.cue *.flac || continue
         exit
         ;;
 
     *.wav*)
-        mkdir -p split || continue
-        shnsplit -d split -f *.cue -o "${OPTION_SHNSPLIT}" *.wav -t "${FORMAT_SHNSPLIT}" || continue
-        rm -f split/00*pregap* || continue
-        cuetag.sh *.cue split/*.flac || continue
+        shnsplit -f *.cue -o "${OPTION_SHNSPLIT}" *.wav -t "${FORMAT_SHNSPLIT}" || continue
+        rm -f 00*pregap* || continue
+        cuetag.sh *.cue *.flac || continue
         exit
         ;;
 
