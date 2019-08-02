@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # frontend for:            cuetools, shntool, mp3splt
 # optional dependencies:    flac, mac, wavpack, ttaenc
@@ -24,69 +24,80 @@ else
     esac
 fi
 
+ABS_DIR=`readlink -f ${DIR}`
+
 OPTION_SHNSPLIT='flac flac -V --best -o %f -'
 FORMAT_SHNSPLIT='%n - %p - %t'
 FORMAT_MP3SPLT='@n - @p - @t'
 
 echo -e "\
 
-Directory: $DIR
+Directory: $ABS_DIR
 ________________________________________
 "
-cd "$DIR"
-TYPE=`ls -t1`
+cd ${ABS_DIR}
 
-case $TYPE in
-    *.ape*)
-        shnsplit -f *.cue -o "${OPTION_SHNSPLIT}" *.ape -t "${FORMAT_SHNSPLIT}" || continue
-        rm -f 00*pregap* || continue
-        cuetag.sh *.cue *.flac || continue
-        exit
-        ;;
+CUE_LIST=`find "${ABS_DIR}" -name *.cue`
+for CUE in ${CUE_LIST}
+do
+	ABS_CUE=`readlink -f ${CUE}`
+	echo "ABS_CUE:"${ABS_CUE}
+	TARGET=`ls -S1 ${ABS_CUE%%.cue}.* | head -n 1` || continue
+	echo "target:"${TARGET}
+	TARGET_DIR=$(dirname "${ABS_CUE}")
+	echo "target_dir:"${TARGET_DIR}
 
-    *.flac*)
-        shnsplit -f *.cue -o "${OPTION_SHNSPLIT}" *.flac -t "${FORMAT_SHNSPLIT}" || cnotinue
-        rm -f 00*pregap* || continue
-        cuetag.sh *.cue *.flac || continue
-        exit
-        ;;
+	cd "${TARGET_DIR}"
 
-    *.mp3*)
-        mp3splt -no "${FORMAT_MP3SPLT}" -c *.cue *.mp3 || continue
-        cuetag.sh *.cue *.mp3
-        exit
-        ;;
+	case "${TARGET}" in
+	    *.ape*)
+	        shnsplit -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
+	        rm -f 00*pregap* || continue
+	        cuetag.sh "${ABS_CUE}" *.flac || continue
+	        ;;
 
-    *.ogg*)
-        mp3splt -no "${FORMAT_MP3SPLT}" -c *.cue *.ogg || continue
-        cuetag.sh *.cue *.ogg || continue
-        exit
-        ;;
+ 	   *.flac*)
+ 	       shnsplit -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
+ 	       rm -f 00*pregap* || continue
+ 	       cuetag.sh "${ABS_CUE}" *.flac || continue
+ 	       ;;
 
-    *.tta*)
-        shnsplit -f *.cue -o "${OPTION_SHNSPLIT}" *.tta -t "${FORMAT_SHNSPLIT}" || continue
-        rm -f 00*pregap* || continue
-        cuetag.sh *.cue *.flac || continue
-        exit
-        ;;
+ 	   *.mp3*)
+ 	       mp3splt -no "${FORMAT_MP3SPLT}" -c "${ABS_CUE}" "${TARGET}" || continue
+ 	       cuetag.sh "${ABS_CUE}" *.mp3
+ 	       ;;
 
-    *.wv*)
-        shnsplit -f *.cue -o "${OPTION_SHNSPLIT}" *.wv -t "${FORMAT_SHNSPLIT}" || continue
-        rm -f 00*pregap* || continue
-        cuetag.sh *.cue *.flac || continue
-        exit
-        ;;
+ 	   *.ogg*)
+ 	       mp3splt -no "${FORMAT_MP3SPLT}" -c "${ABS_CUE}" "${TARGET}" || continue
+ 	       cuetag.sh "${ABS_CUE}" *.ogg || continue
+ 	       ;;
 
-    *.wav*)
-        shnsplit -f *.cue -o "${OPTION_SHNSPLIT}" *.wav -t "${FORMAT_SHNSPLIT}" || continue
-        rm -f 00*pregap* || continue
-        cuetag.sh *.cue *.flac || continue
-        exit
-        ;;
+ 	   *.tta*)
+ 	       shnsplit -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
+ 	       rm -f 00*pregap* || continue
+ 	       cuetag.sh "${ABS_CUE}" *.flac || continue
+ 	       ;;
 
-    * )
-    echo "Error: Found no files to split!"
-    echo "       --> APE, FLAC, MP3, OGG, TTA, WV, WAV"
-esac
+ 	   *.wv*)
+ 	       shnsplit -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
+ 	       rm -f 00*pregap* || continue
+	       cuetag.sh "${ABS_CUE}" *.flac || continue
+	       ;;
+
+	    *.wav*)
+	        shnsplit -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
+	        rm -f 00*pregap* || continue
+	        cuetag.sh "${ABS_CUE}" *.flac || continue
+	        ;;
+
+	    * )
+	    	echo "Error: Found no files to split!"
+	    	echo "       --> APE, FLAC, MP3, OGG, TTA, WV, WAV"
+		;;
+
+	esac
+
+done
+
 exit
 
