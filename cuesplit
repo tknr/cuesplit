@@ -51,13 +51,13 @@ do
 
 	case "${TARGET}" in
 	    *.ape*)
-	        shnsplit -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
+	        shnsplit -O always -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
 	        rm -f 00*pregap* || continue
 	        cuetag.sh "${ABS_CUE}" *.flac || continue
 	        ;;
 
  	   *.flac*)
- 	       shnsplit -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
+ 	       shnsplit -O always -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
  	       rm -f 00*pregap* || continue
  	       cuetag.sh "${ABS_CUE}" *.flac || continue
  	       ;;
@@ -73,26 +73,25 @@ do
  	       ;;
 
  	   *.tta*)
- 	       shnsplit -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
+ 	       shnsplit -O always -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
  	       rm -f 00*pregap* || continue
  	       cuetag.sh "${ABS_CUE}" *.flac || continue
  	       ;;
 
  	   *.wv*)
- 	       shnsplit -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
+ 	       shnsplit -O always -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
  	       rm -f 00*pregap* || continue
 	       cuetag.sh "${ABS_CUE}" *.flac || continue
 	       ;;
 
 	    *.wav*)
-	        shnsplit -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
+	        shnsplit -O always -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
 	        rm -f 00*pregap* || continue
 	        cuetag.sh "${ABS_CUE}" *.flac || continue
 	        ;;
 
 	    * )
-	    	echo "Error: Found no files to split!"
-	    	echo "       --> APE, FLAC, MP3, OGG, TTA, WV, WAV"
+	    	echo "Error: Found no files to split! --> APE, FLAC, MP3, OGG, TTA, WV, WAV"
 		;;
 
 	esac
