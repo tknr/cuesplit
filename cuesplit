@@ -67,7 +67,7 @@ do
  
  	       ;;
 
- 	 m *.mp3*)
+ 	   *.mp3*)
  	       mp3splt -no "${FORMAT_MP3SPLT}" -c "${ABS_CUE}" "${TARGET}" || continue
  	       cuetag.sh "${ABS_CUE}" *.mp3 || continue
                 rm -f "${TARGET}" || continue
