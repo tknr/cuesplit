@@ -37,79 +37,39 @@ ________________________________________
 "
 cd ${ABS_DIR}
 
-CUE_LIST=`find "${ABS_DIR}" -name *.cue`
+CUE_LIST=`find "${ABS_DIR}" -name *.cue -o -name *.CUE -o -name *.Cue`
 for CUE in ${CUE_LIST}
 do
 	ABS_CUE=`readlink -f ${CUE}`
 	echo "ABS_CUE:"${ABS_CUE}
+        TARGET_DIR=$(dirname "${ABS_CUE}")
+        echo "target_dir:"${TARGET_DIR}
+
+        cd "${TARGET_DIR}"
+
 	TARGET=`ls -S1 ${ABS_CUE%%.cue}.* | head -n 1` || continue
 	echo "target:"${TARGET}
-	TARGET_DIR=$(dirname "${ABS_CUE}")
-	echo "target_dir:"${TARGET_DIR}
-
-	cd "${TARGET_DIR}"
 
 	case "${TARGET}" in
-	    *.ape*)
+	    *.ape* | *.flac* | *.tta* | *.wv* | *.wav*)
 	        shnsplit -O always -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
 	        rm -f 00*pregap* || continue
 	        cuetag.sh "${ABS_CUE}" *.flac || continue
 		rm -f "${TARGET}" || continue
 		rm -f "${ABS_CUE}" || continue
 	        ;;
-
- 	   *.flac*)
- 	       shnsplit -O always -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
- 	       rm -f 00*pregap* || continue
- 	       cuetag.sh "${ABS_CUE}" *.flac || continue
-                rm -f "${TARGET}" || continue
-                rm -f "${ABS_CUE}" || continue
- 
- 	       ;;
-
  	   *.mp3*)
  	       mp3splt -no "${FORMAT_MP3SPLT}" -c "${ABS_CUE}" "${TARGET}" || continue
  	       cuetag.sh "${ABS_CUE}" *.mp3 || continue
                 rm -f "${TARGET}" || continue
                 rm -f "${ABS_CUE}" || continue
- 
  	       ;;
-
  	   *.ogg*)
  	       mp3splt -no "${FORMAT_MP3SPLT}" -c "${ABS_CUE}" "${TARGET}" || continue
  	       cuetag.sh "${ABS_CUE}" *.ogg || continue
                 rm -f "${TARGET}" || continue
                 rm -f "${ABS_CUE}" || continue
- 
  	       ;;
-
- 	   *.tta*)
- 	       shnsplit -O always -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
- 	       rm -f 00*pregap* || continue
- 	       cuetag.sh "${ABS_CUE}" *.flac || continue
-                rm -f "${TARGET}" || continue
-                rm -f "${ABS_CUE}" || continue
- 
- 	       ;;
-
- 	   *.wv*)
- 	       shnsplit -O always -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
- 	       rm -f 00*pregap* || continue
-	       cuetag.sh "${ABS_CUE}" *.flac || continue
-                rm -f "${TARGET}" || continue
-                rm -f "${ABS_CUE}" || continue
- 
-	       ;;
-
-	    *.wav*)
-	        shnsplit -O always -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
-	        rm -f 00*pregap* || continue
-	        cuetag.sh "${ABS_CUE}" *.flac || continue
-                rm -f "${TARGET}" || continue
-                rm -f "${ABS_CUE}" || continue
- 
-	        ;;
-
 	    * )
 	    	echo "Error: Found no files to split! --> APE, FLAC, MP3, OGG, TTA, WV, WAV"
 		;;
