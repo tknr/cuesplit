@@ -47,7 +47,7 @@ do
 
         cd "${TARGET_DIR}"
 
-	TARGET=`ls -S1 ${ABS_CUE%%.cue}.* | head -n 1` || continue
+	TARGET=`ls -S1 ${TARGET_DIR} | head -n 1` || continue
 	echo "target:"${TARGET}
 
 	case "${TARGET}" in
