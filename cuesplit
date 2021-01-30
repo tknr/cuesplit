@@ -54,19 +54,19 @@ do
 	    *.ape* | *.flac* | *.tta* | *.wv* | *.wav*)
 	        shnsplit -O always -f "${ABS_CUE}" -o "${OPTION_SHNSPLIT}" "${TARGET}" -t "${FORMAT_SHNSPLIT}" || continue
 	        rm -f 00*pregap* || continue
-	        cuetag.sh "${ABS_CUE}" *.flac || continue
+	        #cuetag.sh "${ABS_CUE}" *.flac || continue
 		rm -f "${TARGET}" || continue
 		rm -f "${ABS_CUE}" || continue
 	        ;;
  	   *.mp3*)
  	       mp3splt -no "${FORMAT_MP3SPLT}" -c "${ABS_CUE}" "${TARGET}" || continue
- 	       cuetag.sh "${ABS_CUE}" *.mp3 || continue
+ 	       #cuetag.sh "${ABS_CUE}" *.mp3 || continue
                 rm -f "${TARGET}" || continue
                 rm -f "${ABS_CUE}" || continue
  	       ;;
  	   *.ogg*)
  	       mp3splt -no "${FORMAT_MP3SPLT}" -c "${ABS_CUE}" "${TARGET}" || continue
- 	       cuetag.sh "${ABS_CUE}" *.ogg || continue
+ 	       #cuetag.sh "${ABS_CUE}" *.ogg || continue
                 rm -f "${TARGET}" || continue
                 rm -f "${ABS_CUE}" || continue
  	       ;;
